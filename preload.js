@@ -1,9 +1,6 @@
 const { contextBridge, ipcRenderer  } = require('electron')
 
 contextBridge.exposeInMainWorld('versions', {
-  node: () => process.versions.node,
-  chrome: () => process.versions.chrome,
-  electron: () => process.versions.electron,
-  ping: () => ipcRenderer.invoke('ping')
-  // 除函数之外，我们也可以暴露变量
+  socket_msg: (callback) => ipcRenderer.on('socket_msg', (event, data) => { callback(data) }),
+  send_msg: (data, counter) => ipcRenderer.send('send_msg', data, counter)
 })
